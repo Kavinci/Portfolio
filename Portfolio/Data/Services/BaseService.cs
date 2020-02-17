@@ -8,15 +8,15 @@ namespace Portfolio.Services
 {
     public class BaseService
     {
-        private ApplicationDbContext internalDb;
-        public ApplicationDbContext _db
+        private ApplicationContext internalDb;
+        public ApplicationContext _db
         {
             get
             {
                 if (internalDb != null) return internalDb;
                 try
                 {
-                    internalDb = new ApplicationDbContext();
+                    internalDb = new ApplicationContext();
                     internalDb.Database.CanConnect();
                 }
                 catch (Exception ex)

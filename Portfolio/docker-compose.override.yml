@@ -25,7 +25,7 @@ services:
     environment:
       POSTGRES_PASSWORD: "Vh267g2MFXvlJIwfrUYch"
       POSTGRES_USER: "app"
-      POSTGRES_DB: "application"
+      POSTGRES_MULTIPLE_DATABASES: "application,cofoundry"
     ports:
       - "5432:5432"
     volumes:

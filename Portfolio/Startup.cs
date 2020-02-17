@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Portfolio.Data;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Data.Contexts;
+using Cofoundry.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace Portfolio
 {
@@ -28,9 +30,18 @@ namespace Portfolio
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             services.AddControllers();
             services.AddDbContext<ApplicationContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("Application")));
+                    options.UseNpgsql(Configuration.GetConnectionString("application")));
+            services
+                .AddMvc()
+                .AddCofoundry(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,16 +52,20 @@ namespace Portfolio
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHsts();
+
             app.UseHttpsRedirection();
 
-            app.UseRouting();
+            //app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCofoundry();
         }
     }
 }
